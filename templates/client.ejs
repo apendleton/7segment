@@ -1,16 +1,43 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Client</title>
-		<script type="text/javascript" src="/media/js/jquery-1.7.1.min.js"></script>
-		<script type="text/javascript" src="/media/js/d3.min.js"></script>
-		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
-		<script type="text/javascript">var CLIENT_ID = <%= id %>;</script>
-		<script type="text/javascript" src="/media/js/client.js"></script>
+    <head>
+        <title>Client</title>
+        <script type="text/javascript" src="/media/js/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="/media/js/underscore-min.js"></script>
+        <script type="text/javascript" src="/media/js/d3.min.js"></script>
+        <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+        <script type="text/javascript">
+            var CLIENT_ID = <%= id %>;
+            _.templateSettings = {
+                evaluate    : /\[%([\s\S]+?)%\]/g,
+                interpolate : /\[%=([\s\S]+?)%\]/g,
+                escape      : /\[%-([\s\S]+?)%\]/g
+            };
+        </script>
+        <script type="text/javascript" src="/media/js/client.js"></script>
 
-		<script type="text/html">
-			<%- partial('7segment.svg.ejs') %>
-		</script>
-	</head>
-	<body></body>
+        <script type="text/html" id="7seg-tpl">
+            <%- partial('7segment.svg.ejs') %>
+        </script>
+        <script type="text/html" id="7seg-style">
+            body {
+                background: [%= bg %];
+            }
+            g.digit {
+                fill-rule: evenodd;
+                stroke: [%= bg %];
+                stroke-width: 0.25;
+                stroke-opacity: 1;
+                stroke-linecap: butt;
+                stroke-linejoin: miter;
+            }
+            polygon.on {
+                fill: [%= on %];
+            }
+            polygon.off {
+                fill: [%= off %];
+            }
+        </script>
+    </head>
+    <body></body>
 </html>

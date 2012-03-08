@@ -1,4 +1,5 @@
 var NUM_DIGITS = 5;
+var POSITION = 'top';
 $(function() {
     var clock = $("<div>").css({'white-space': 'nowrap', 'position': 'absolute'});
     $("body").css({'margin': 0, 'padding': 0}).append(clock);
@@ -26,7 +27,7 @@ $(function() {
             digit.attr('height', height);
         });
 
-        clock.css({'top': (($window.height() - height) / 2) + 'px'})
+        clock.css({'top': POSITION == "top" ? "0" : (($window.height() - height) / 2) + 'px'})
     }
     calibrate();
     $(window).resize(calibrate);

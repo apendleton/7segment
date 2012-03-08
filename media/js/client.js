@@ -1,4 +1,4 @@
-var NUM_DIGITS = 4;
+var NUM_DIGITS = 5;
 $(function() {
     var clock = $("<div>").css({'white-space': 'nowrap', 'position': 'absolute'});
     $("body").css({'margin': 0, 'padding': 0}).append(clock);
@@ -12,10 +12,15 @@ $(function() {
     }
 
     var ratio = digits[0].height() / digits[0].width();
+    if (!ratio) {
+        var rect = digits[0].get(0).getBoundingClientRect();
+        ratio = rect.height / rect.width;
+    }
     var calibrate = function() {
         var $window = $(window);
         var width = $window.width() / digits.length;
         var height = width * ratio;
+        console.log(width, ratio, height);
 
         _.each(digits, function(digit) {
             digit.attr('width', width);
@@ -40,5 +45,72 @@ $(function() {
             colors
         );
     }
-    setColors({'on': '#0000ff', 'off': '#000066', 'bg': '#000099'});
+    setColors(COLORS[0]);
+
+    var numerals = {
+        ' ': ['', 'abcdefg'],
+        '0': ['abcdef', 'g'],
+        '1': ['bc', 'adefg'],
+        '2': ['abdeg', 'cf'],
+        '3': ['abcdg', 'ef'],
+        '4': ['bcfg', 'ade'],
+        '5': ['acdfg', 'be'],
+        '6': ['acdefg', 'b'],
+        '7': ['abc', 'defg'],
+        '8': ['abcdefg', ''],
+        '9': ['abcdfg', 'e']
+    }
+
+    var setState = function(parent, letters, state) {
+        var opposites = {'off': 'on', 'on': 'off'};
+        var classes = _.map(letters.split(''), function(s) { return '.' + s; }).join(',');
+        if (classes.length > 1) {
+            var d = d3.selectAll(parent.find(classes).get());
+            d.classed(state, true);
+            d.classed(opposites[state], false);
+        }
+    }
+
+    var _setNumber = function(number) {
+        var sn = number.toString();
+        if (sn.length < NUM_DIGITS) {
+            sn = Array(NUM_DIGITS - sn.length + 1).join(' ') + sn;
+        } else if (sn.length > NUM_DIGITS) {
+            sn = sn.substr(sn.length - NUM_DIGITS, NUM_DIGITS);
+        }
+
+        var n;
+        for (var i = 0; i < NUM_DIGITS; i++) {
+            n = sn.charAt(i);
+            if (typeof numerals[n] == 'undefined') n = " ";
+            setState(digits[i], numerals[n][0], 'on');
+            setState(digits[i], numerals[n][1], 'off');
+        }
+    }
+
+    var setNumber = function(number) {
+        var sn = number.toString();
+        var i = 1;
+        var next = function() {
+            var sub = sn.substr(0, i);
+            _setNumber(sub);
+            if (sub != sn) {
+                i++;
+                setTimeout(next, 200);
+            }
+        };
+        next();
+    }
+    
+    /* set up client stuff */
+    var socket = io.connect("/clients");
+    socket.on('connect', function() {
+        socket.emit('subscribe', CLIENT_ID)
+        socket.on('number', function(number) {
+            setNumber(number);
+        });
+        socket.on('color', function(color) {
+            setColors(COLORS[color]);
+        });
+    })
 })

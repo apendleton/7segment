@@ -27,21 +27,19 @@ $(function() {
     socket.on('connect', function() {
         socket.on('status', function(data) {
             var status = JSON.parse(data);
-            $('#clients .client').each(function() {
-                var $this = $(this);
-                var channel = $this.attr('data-client-id');
-                if (typeof status[channel] == "undefined") {
-                    $this.remove();
-                } else {
-                    delete status[channel];
-                }
-            });
+            $('#clients .client').hide();
             _.each(status, function(info, channel) {
-                $('#clients').append(_.template(
-                    $('#client-tpl').html(),
-                    {'id': channel}
-                ));
+                var existing = $('#clients .client[data-client-id=' + channel +']');
+                if (existing.length) {
+                    existing.appendTo($('#clients')).show();
+                } else {
+                    $('#clients').append(_.template(
+                        $('#client-tpl').html(),
+                        {'id': channel}
+                    ));
+                }
             })
+            $('#clients .client:hidden').remove();
         })
 
         change = function(data) {

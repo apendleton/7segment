@@ -109,8 +109,10 @@ $(function() {
         socket.on('change', function(data) {
             var change = JSON.parse(data);
             if (change.property == 'number') {
+                clock.removeClass('blink');
                 setNumber(change.value);
             } else if (change.property == 'color') {
+                clock.removeClass('blink');
                 setColors(COLORS[change.value]);
             } else if (change.property == 'blink') {
                 d3.selectAll(clock.get()).classed('blink', change.value);

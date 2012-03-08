@@ -20,7 +20,6 @@ $(function() {
         var $window = $(window);
         var width = $window.width() / digits.length;
         var height = width * ratio;
-        console.log(width, ratio, height);
 
         _.each(digits, function(digit) {
             digit.attr('width', width);
@@ -106,11 +105,15 @@ $(function() {
     var socket = io.connect("/clients");
     socket.on('connect', function() {
         socket.emit('subscribe', CLIENT_ID)
-        socket.on('number', function(number) {
-            setNumber(number);
-        });
-        socket.on('color', function(color) {
-            setColors(COLORS[color]);
+        socket.on('change', function(data) {
+            var change = JSON.parse(data);
+            if (change.property == 'number') {
+                setNumber(change.value);
+            } else if (change.property == 'color') {
+                setColors(COLORS[change.value]);
+            } else if (change.property == 'blink') {
+                d3.selectAll(clock.get()).classed('blink', change.value);
+            }
         });
     })
 })

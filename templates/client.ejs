@@ -38,6 +38,23 @@
             polygon.off {
                 fill: [%= off %];
             }
+
+            /* blinking */
+            @-webkit-keyframes blinker {
+                0% { fill: [%= on %]; }
+                50% { fill: [%= off %]; }
+            }
+            @-moz-keyframes blinker {
+                0% { fill: [%= on %]; }
+                50% { fill: [%= off %]; }
+            }
+            .blink polygon.on {
+                -webkit-animation: blinker 1s step-end 0 infinite;
+                -moz-animation-name: blinker;
+                -moz-animation-duration: 1s;
+                -moz-animation-timing-function: step-end;
+                -moz-animation-iteration-count: infinite;
+            }
         </script>
     </head>
     <body></body>

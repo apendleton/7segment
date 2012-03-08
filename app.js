@@ -72,19 +72,11 @@ io.of('/servers').on('connection', function(socket) {
     socket.on('disconnect', function() {
         servers = _.filter(servers, function(s) { return s != socket; });
     })
-    socket.on('changeNumber', function(data) {
+    socket.on('change', function(data) {
         var change = JSON.parse(data);
         if (typeof channels[change.channel] != 'undefined') {
             _.each(channels[change.channel], function(clientSocket) {
-                clientSocket.emit('number', change.number);
-            });
-        }
-    });
-    socket.on('changeColor', function(data) {
-        var change = JSON.parse(data);
-        if (typeof channels[change.channel] != 'undefined') {
-            _.each(channels[change.channel], function(clientSocket) {
-                clientSocket.emit('color', change.color);
+                clientSocket.emit('change', data);
             });
         }
     });

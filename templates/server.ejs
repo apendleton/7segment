@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Client</title>
+        <title>Server</title>
         <script type="text/javascript" src="/media/js/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/media/js/underscore-min.js"></script>
         <script type="text/javascript" src="/media/js/d3.min.js"></script>
@@ -21,9 +21,15 @@
                 <strong>Client [%= id %]</strong><br />
                 <form action="#">
                     <div class="palette">
+                        <span class="label">colors:</span>
                         [% for (var i = 0; i < COLORS.length; i++) { %]
                         <div class="swatch" style="background: [%= COLORS[i].bg %]; border: 1px solid [%= COLORS[i].off %];" data-color="[%= i %]"></div>
                         [% } %]
+                    </div>
+                    <div class="blink">
+                        <span class="label">blink:</span>
+                        <input type="button" class="blink-button" value="on" />
+                        <input type="button" class="blink-button" value="off" />
                     </div>
                     <input type="text" class="value" /> <input type="submit" value="go" />
                     <div class="clear"></div>
@@ -42,10 +48,11 @@
                 padding: 10px;
                 margin-bottom: 10px;
             }
-            .palette {
+            .palette, .blink {
                 float: left;
                 border-right: 1px solid #333333;
                 margin-right: 10px;
+                height: 20px;
             }
             .swatch {
                 float: left;
@@ -54,8 +61,22 @@
                 cursor: pointer;
                 margin-right: 10px;
             }
+            .blink input {
+                margin: 0;
+                padding: 0;
+                font-size: 70%;
+                display: block;
+                float: left;
+                margin-right: 4px;
+            }
             .clear {
                 clear: both;
+            }
+            .label {
+                display: block;
+                float: left;
+                margin-right: 5px;
+                font-size: 80%;
             }
         </style>
     </head>

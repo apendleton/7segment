@@ -18,7 +18,7 @@
 
         <script type="text/html" id="client-tpl">
             <div class="client" data-client-id=[%= id %]>
-                <strong>Client [%= id %]</strong><br />
+                <strong>[%= id == '*' ? 'All panels' : 'Panel ' + id %]</strong><br />
                 <form action="#">
                     <div class="palette">
                         <span class="label">colors:</span>

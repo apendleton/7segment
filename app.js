@@ -74,11 +74,17 @@ io.of('/servers').on('connection', function(socket) {
     })
     socket.on('change', function(data) {
         var change = JSON.parse(data);
-        if (typeof channels[change.channel] != 'undefined') {
-            _.each(channels[change.channel], function(clientSocket) {
+        var to_change = [];
+        if (change.channel == '*') {
+            to_change = channels;
+        } else if (typeof channels[change.channel] != 'undefined') {
+            to_change = [channels[change.channel]];
+        }
+        _.each(to_change, function(channel) {
+            _.each(channel, function(clientSocket) {
                 clientSocket.emit('change', data);
             });
-        }
+        });
     });
 
     updateStatus(socket);

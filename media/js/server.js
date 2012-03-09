@@ -27,9 +27,13 @@ $(function() {
     socket.on('connect', function() {
         socket.on('status', function(data) {
             var status = JSON.parse(data);
+            if (!$.isEmptyObject(status)) {
+                status['*'] = 1;
+            }
+
             $('#clients .client').hide();
             _.each(status, function(info, channel) {
-                var existing = $('#clients .client[data-client-id=' + channel +']');
+                var existing = $('#clients .client[data-client-id="' + channel +'"]');
                 if (existing.length) {
                     existing.appendTo($('#clients')).show();
                 } else {

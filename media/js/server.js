@@ -38,12 +38,12 @@ $(function() {
     socket.on('connect', function() {
         socket.on('status', function(data) {
             var status = JSON.parse(data);
-            if (!$.isEmptyObject(status)) {
-                status['*'] = 1;
+            if (status.length != 0) {
+                status.push('*');
             }
 
             $('#clients .client').hide();
-            _.each(status, function(info, channel) {
+            _.each(status, function(channel) {
                 var existing = $('#clients .client[data-client-id="' + channel +'"]');
                 if (existing.length) {
                     existing.appendTo($('#clients')).show();

@@ -31,11 +31,11 @@ var channels = {}
 var servers = []
 
 var updateStatus = function(socket) {
-    var status = {};
+    var status = [];
     _.each(channels, function(value, key) {
-        status[key] = true;
+        status.push(key);
     });
-    socket.emit('status', JSON.stringify(status))
+    socket.emit('status', JSON.stringify(status.sort()))
 }
 var updateStatusAll = function() {
     _.each(servers, function(socket) {

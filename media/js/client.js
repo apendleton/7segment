@@ -1,5 +1,6 @@
 var NUM_DIGITS = 5;
 var POSITION = 'top';
+var PADDING = .05;
 $(function() {
     var clock = $("<div>").css({'white-space': 'nowrap', 'position': 'absolute'});
     $("body").css({'margin': 0, 'padding': 0}).append(clock);
@@ -19,7 +20,8 @@ $(function() {
     }
     var calibrate = function() {
         var $window = $(window);
-        var width = $window.width() / digits.length;
+        var window_width = $window.width();
+        var width = ((1 - (2 * PADDING)) * window_width) / digits.length;
         var height = width * ratio;
 
         _.each(digits, function(digit) {
@@ -27,7 +29,7 @@ $(function() {
             digit.attr('height', height);
         });
 
-        clock.css({'top': POSITION == "top" ? "0" : (($window.height() - height) / 2) + 'px'})
+        clock.css({'top': POSITION == "top" ? (PADDING * window_width) + "px" : (($window.height() - height) / 2) + 'px', 'margin-left': (PADDING * window_width) + 'px'})
     }
     calibrate();
     $(window).resize(calibrate);

@@ -20,6 +20,9 @@
             <div class="client" data-client-id=[%= id %]>
                 <strong>[%= id == '*' ? 'All panels' : 'Panel ' + id %]</strong><br />
                 <form action="#">
+                    <div class="blink">
+                        <input type="button" class="refresh-button" value="force refresh" />
+                    </div>
                     <div class="palette">
                         <span class="label">colors:</span>
                         [% for (var i = 0; i < COLORS.length; i++) { %]
@@ -30,6 +33,11 @@
                         <span class="label">blink:</span>
                         <input type="button" class="blink-button" value="on" />
                         <input type="button" class="blink-button" value="off" />
+                    </div>
+                    <div class="blink">
+                        <span class="label">screen:</span>
+                        <input type="button" class="screen-button" value="on" />
+                        <input type="button" class="screen-button" value="off" />
                     </div>
                     <input type="text" class="value" /> <input type="submit" value="go" />
                     <div class="clear"></div>

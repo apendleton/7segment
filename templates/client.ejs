@@ -55,6 +55,39 @@
                 -moz-animation-timing-function: step-end;
                 -moz-animation-iteration-count: infinite;
             }
+            
+            /* fades */
+            @-moz-keyframes polygonIn { from { opacity: 0; } to { opacity: 1; } }
+            @-webkit-keyframes polygonIn { from { opacity: 0; } to { opacity: 1; } }
+            @-moz-keyframes polygonOut { from { opacity: 1; } to { opacity: 0; } }
+            @-webkit-keyframes polygonOut { from { opacity: 1; } to { opacity: 0; } }
+            
+            @-moz-keyframes bodyIn { from { background-color: #000000; } to { background-color: [%= bg %]; } }
+            @-webkit-keyframes bodyIn { from { background-color: #000000; } to { background-color: [%= bg %]; } }
+            @-moz-keyframes bodyOut { from { background-color: [%= bg %]; } to { background-color: #000000; } }
+            @-webkit-keyframes bodyOut { from { background-color: [%= bg %]; } to { background-color: #000000; } }
+            
+            .fadeIn polygon, .fadeOut polygon, body.fadeIn, body.fadeOut {
+                -moz-animation-duration: 2s; -webkit-animation-duration: 2s;
+                -moz-animation-timing-function: ease; -webkit-animation-timing-function: ease;
+                -moz-animation-iteration-count: 1; -webkit-animation-iteration-count: 1;
+            }
+            .fadeIn polygon {
+                -moz-animation-name: polygonIn; -webkit-animation-name: polygonIn;
+                opacity: 1;
+            }
+            .fadeOut polygon {
+                -moz-animation-name: polygonOut; -webkit-animation-name: polygonOut;
+                opacity: 0;
+            }
+            body.fadeIn {
+                -moz-animation-name: bodyIn; -webkit-animation-name: bodyIn;
+                background-color: [%= bg %];
+            }
+            body.fadeOut {
+                -moz-animation-name: bodyOut; -webkit-animation-name: bodyOut;
+                background-color: #000000;
+            }
         </script>
     </head>
     <body></body>

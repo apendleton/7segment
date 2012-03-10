@@ -116,6 +116,10 @@ $(function() {
                 setColors(COLORS[change.value]);
             } else if (change.property == 'blink') {
                 d3.selectAll(clock.get()).classed('blink', change.value);
+            } else if (change.property == 'refresh') {
+                document.location.reload();
+            } else if (change.property == 'screen') {
+                d3.selectAll('body').classed('fadeIn', change.value).classed('fadeOut', !change.value);
             }
         });
     })

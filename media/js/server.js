@@ -21,6 +21,17 @@ $(function() {
         var channel = $(this).parents('.client').attr('data-client-id');
         change({'channel': channel, 'property': 'blink', 'value': state});
     })
+    
+    $('#clients').on('click', '.screen-button', function() {
+        var state = ($(this).attr('value') == 'on');
+        var channel = $(this).parents('.client').attr('data-client-id');
+        change({'channel': channel, 'property': 'screen', 'value': state});
+    })
+    
+    $('#clients').on('click', '.refresh-button', function() {
+        var channel = $(this).parents('.client').attr('data-client-id');
+        change({'channel': channel, 'property': 'refresh', 'value': 1});
+    })
 
     /* remote handlers */
     var socket = io.connect("/servers");

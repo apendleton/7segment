@@ -122,6 +122,12 @@ $(function() {
                 document.location.reload();
             } else if (change.property == 'screen') {
                 d3.selectAll('body').classed('fadeIn', change.value).classed('fadeOut', !change.value);
+                // hack to avoid weird animation interactions
+                if (change.value) {
+                    setTimeout(function() {
+                        d3.selectAll('body').classed('fadeIn', false);
+                    }, 2500);
+                }
             }
         });
     })

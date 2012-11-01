@@ -2,9 +2,11 @@
 var express = require('express');
 var sio = require('socket.io');
 var _ = require('underscore');
+var http = require('http');
 
 /* app */
-var app = express.createServer();
+var app = express();
+var server = http.createServer(app);
 app.configure(function() {
     app.use("/media", express.static(__dirname + '/media'));
     app.set('views', __dirname + '/templates');
@@ -26,7 +28,7 @@ app.get('/server', function(req, res) {
 });
 
 /* socket.io setup */
-var io = sio.listen(app);
+var io = sio.listen(server);
 var channels = {}
 var servers = []
 
@@ -91,4 +93,4 @@ io.of('/servers').on('connection', function(socket) {
 });
 
 // module.exports = app;
-app.listen(3000);
+server.listen(3000);

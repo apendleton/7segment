@@ -7,12 +7,12 @@ var http = require('http');
 /* app */
 var app = express();
 var server = http.createServer(app);
-app.configure(function() {
+(function() {
     app.use("/media", express.static(__dirname + '/media'));
     app.set('views', __dirname + '/templates');
     app.set('view engine', 'ejs');
     app.set('view options', {layout: false})
-});
+})();
 
 /* routes */
 app.get('/', function(req, res) {
@@ -47,26 +47,27 @@ var updateStatusAll = function() {
 
 io.of('/clients').on('connection', function(socket) {
     socket.on('subscribe', function(id) {
-        socket.set('channel', id, function() {
-            if (typeof channels[id] == 'undefined') {
-                channels[id] = [socket];
-            } else {
-                channels[id].push(socket);
-            }
-            updateStatusAll();
-        });
+        socket.channel = id;
+        console.log('connect', id);
+        
+        if (typeof channels[id] == 'undefined') {
+            channels[id] = [socket];
+        } else {
+            channels[id].push(socket);
+        }
+        updateStatusAll();
     });
     socket.on('disconnect', function() {
-        socket.get('channel', function(err, id) {
-            if (id && channels[id]) {
-                channels[id] = _.filter(channels[id], function(s) { return s != socket; });
-                if (channels[id].length == 0) {
-                    delete channels[id];
-                }
+        var id = socket.channel;
+        console.log('disconnect', id);
+        if (id && channels[id]) {
+            channels[id] = _.filter(channels[id], function(s) { return s != socket; });
+            if (channels[id].length == 0) {
+                delete channels[id];
             }
-        });
+        }
         updateStatusAll();
-    })
+    });
 });
 
 io.of('/servers').on('connection', function(socket) {

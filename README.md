@@ -1,0 +1,2 @@
+# 7segment
+This is the code used to drive a set of on-stage displays meant to look like game show 7-segment LCD score displays for a performance parodying the Price is Right. It's a node app run from the booth of the theater, with an admin interface also run in the booth that allows operators to update the displays, and a client view shown on each of the on-stage displays, with Socket.IO communication amongst them.
